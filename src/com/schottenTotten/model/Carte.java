@@ -29,6 +29,10 @@ public class Carte {
 		this.couleur = couleur;
 	}
 	
+	public static void displayCard(Carte card) {
+		System.out.println("Voici une carte: " + card.getCouleur() + " " + card.getValeur());
+	}
+	
 	public static List<Carte> CreationPaquet() {
 		List<Carte> PaquetCartes = new ArrayList<Carte>();
 		List<String> Colors = Arrays.asList("Red", "Blue", "Purple", "Green", "Brown", "Yellow");
@@ -39,11 +43,18 @@ public class Carte {
 		return PaquetCartes;
 	}
 	//Méthode pour vérifier si un paquet est bien initialisé (affiche toutes les cartes dans la console)
-	public static void verifPaquet(List<Carte> Paquet) {
+	public static void printPaquet(List<Carte> Paquet) {
 		for (int i = 0; i < Paquet.size(); i++) {
 			System.out.println(Paquet.get(i).getValeur() + " " + Paquet.get(i).getCouleur());			
 		}
-
+	}
+	
+	// Méthode qui distribue les cartes, renvoie un joueur avec des cartes
+	public static void distribInit(Joueur j, List<Carte> Pioche) {
+		for (int i = 0; i < 6; i++) {
+			j.getPaquetJoueur().add(Pioche.get(Pioche.size()-1));
+			Pioche.removeLast();
+		}
 	}
 	
 }
