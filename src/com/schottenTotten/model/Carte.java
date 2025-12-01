@@ -49,7 +49,7 @@ public class Carte {
 		}
 	}
 	
-	// Méthode qui distribue les cartes, renvoie un joueur avec des cartes
+	// Méthode qui distribue 6 cartes à un joueur, pour le début de partie
 	public static void distribInit(Joueur j, List<Carte> Pioche) {
 		for (int i = 0; i < 6; i++) {
 			j.getPaquetJoueur().add(Pioche.get(Pioche.size()-1));

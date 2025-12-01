@@ -17,10 +17,12 @@ public class Jeu {
 		
 		Collections.shuffle(Pioche);
 		
-		Carte.printPaquet(Pioche);
+		//Carte.printPaquet(Pioche);
 		System.out.println("Paquet affiché");
 		
-		Joueur J1 = new Joueur(new ArrayList<Carte>(), new ArrayList<Boolean>());
+		Joueur J1 = new Joueur(new ArrayList<Carte>(), new int[9]);
+		
+		System.out.println(J1.getBornes()[5]);
 		
 		Carte.distribInit(J1, Pioche);
 		
