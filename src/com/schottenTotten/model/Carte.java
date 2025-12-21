@@ -33,6 +33,7 @@ public class Carte {
 		System.out.println("Voici une carte: " + card.getCouleur() + " " + card.getValeur());
 	}
 	
+	// Crée le paquet de cartes initial
 	public static List<Carte> CreationPaquet() {
 		List<Carte> PaquetCartes = new ArrayList<Carte>();
 		List<String> Colors = Arrays.asList("Red", "Blue", "Purple", "Green", "Brown", "Yellow");
@@ -42,6 +43,7 @@ public class Carte {
 			}
 		return PaquetCartes;
 	}
+	
 	//Méthode pour vérifier si un paquet est bien initialisé (affiche toutes les cartes dans la console)
 	public static void printPaquet(List<Carte> Paquet) {
 		for (int i = 0; i < Paquet.size(); i++) {
@@ -56,5 +58,11 @@ public class Carte {
 			Pioche.removeLast();
 		}
 	}
-	
+
+	// Méthode qui distribue une carte au joueur (appelée après chaque tour)
+	public static void pioche(Joueur J, List<Carte> Pioche) {
+		List<Carte> mainJoueur = J.getPaquetJoueur();
+		mainJoueur.add(Pioche.get(Pioche.size()-1));
+		Pioche.removeLast();
+	}
 }

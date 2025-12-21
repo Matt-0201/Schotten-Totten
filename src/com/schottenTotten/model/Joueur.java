@@ -1,5 +1,6 @@
 package com.schottenTotten.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -10,6 +11,11 @@ public class Joueur {
 	public Joueur(List<Carte> paquetJoueur, int[] bornes) {
 		this.setPaquetJoueur(paquetJoueur);
 		this.setBornes(bornes);
+	}
+	
+	public Joueur() {
+		paquetJoueur = new ArrayList<Carte>();
+		bornes =  new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0};
 	}
 	
 	public List<Carte> getPaquetJoueur() {
@@ -27,4 +33,11 @@ public class Joueur {
 		Arrays.fill(bornes, 0);
 		this.bornes = bornes;
 	}
+	
+	public static void bornesToSring (int[] bornes) {
+		for (int i = 0; i < bornes.length; i++) {
+			System.out.print(bornes[i] + "  ");			
+		}
+	}
+
 }
