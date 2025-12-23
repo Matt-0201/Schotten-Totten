@@ -1,8 +1,8 @@
 package com.schottenTotten.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
-import com.schottenTotten.controller.Jeu;
 
 public class Borne {
 	private List<Carte> cartesJ1;
@@ -55,8 +55,8 @@ public class Borne {
 		for (int i = 0; i < bornes.size(); i++) {
 			Borne b = bornes.get(i);
 			if (b.getCartesJ1().size() == 3 & b.getCartesJ2().size() == 3) {
-				b.setScoreJ1(Jeu.scoreBorne(b.getCartesJ1()));
-				b.setScoreJ2(Jeu.scoreBorne(b.getCartesJ2()));
+				b.setScoreJ1(scoreBorne(b.getCartesJ1()));
+				b.setScoreJ2(scoreBorne(b.getCartesJ2()));
 				int score1 = b.getScoreJ1();
 				int score2 = b.getScoreJ2();
 				
@@ -69,11 +69,49 @@ public class Borne {
 		}
 	}
 	
+	// Méthode pour vérifier le score sur une borne
+		public static int scoreBorne(List<Carte> cartes) {
+			List<Integer> listeValeur = new ArrayList<Integer>();
+			for (int i = 0; i < cartes.size(); i++) {
+				listeValeur.add(cartes.get(i).getValeur());
+			}
+			Collections.sort(listeValeur);
+			int isFollowing = 0;
+			int sameValue = 0;
+			int sameColor = 0;
+			Carte c1 = cartes.get(0);
+			Carte c2 = cartes.get(1);
+			Carte c3 = cartes.get(2);
+			
+			int sum = 0;
+			for (int i = 0; i < 3; i++) {
+				sum += listeValeur.get(i);
+			}
+			
+			if (((listeValeur.get(0) + 1) == listeValeur.get(1)) && ((listeValeur.get(1) + 1) == listeValeur.get(2))) {
+				isFollowing = 1;
+			} else if (listeValeur.get(0) == listeValeur.get(1) && ((listeValeur.get(1)) == listeValeur.get(2))) {
+				sameValue = 1;
+			}
+			if (c1.getCouleur() == c2.getCouleur() && c2.getCouleur() == c3.getCouleur()) {
+				sameColor = 1;
+			}
+			if (isFollowing == 1 && sameColor == 1) {return 200 + sum;}
+			
+			else if (sameValue == 1) {return 150 + sum;}
+			
+			else if (sameColor == 1) {return 100 + sum;}
+			
+			else if (isFollowing == 1) {return 50 + sum;}
+			
+			else {return sum;}
+		}
+	
 	// Méthode qui vérifie si un joueur remplit les condition de victoire
 	public static boolean isPlayerWin(Joueur J) {
 		
 		// On vérifie d'abord si le joueur possède 3 bornes alignées
-		for (int borne = 0; borne < J.getBornes().length-3; borne++) {
+		for (int borne = 0; borne <= J.getBornes().length-3; borne++) {
 			if (J.getBornes()[borne] == 1 && J.getBornes()[borne+1] == 1 && J.getBornes()[borne+2] == 1) {
 				return true;
 			}

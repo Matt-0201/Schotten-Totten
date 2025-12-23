@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Joueur {
-	private List<Carte> paquetJoueur;
-	private int[] bornes;
+import com.schottenTotten.controller.Jeu;
+
+public abstract class Joueur {
+	protected List<Carte> paquetJoueur;
+	protected int[] bornes;
+	protected String pseudo;
 	
-	public Joueur(List<Carte> paquetJoueur, int[] bornes) {
+	public Joueur(List<Carte> paquetJoueur, int[] bornes, String pseudo) {
 		this.setPaquetJoueur(paquetJoueur);
 		this.setBornes(bornes);
+		this.setPseudo(pseudo);
 	}
 	
 	public Joueur() {
@@ -34,10 +38,19 @@ public class Joueur {
 		this.bornes = bornes;
 	}
 	
+	public String getPseudo() {
+		return pseudo;
+	}
+
+	public void setPseudo(String pseudo) {
+		this.pseudo = pseudo;
+	}
+
 	public static void bornesToSring (int[] bornes) {
 		for (int i = 0; i < bornes.length; i++) {
 			System.out.print(bornes[i] + "  ");			
 		}
 	}
 
+	public abstract boolean prochainTour(List<Borne> bornes, Jeu game);
 }

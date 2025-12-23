@@ -7,17 +7,23 @@ import com.schottenTotten.controller.Jeu;
 import com.schottenTotten.model.Borne;
 import com.schottenTotten.model.Carte;
 import com.schottenTotten.model.Joueur;
+import com.schottenTotten.view.Affichage;
 
 public class Humain extends Joueur{
 
-	public Humain(List<Carte> paquetJoueur, int[] bornes) {
-		super(paquetJoueur, bornes);
+	public Humain(List<Carte> paquetJoueur, int[] bornes, String pseudo) {
+		super(paquetJoueur, bornes, pseudo);
 	}
 	
+	public Humain() {
+		super();
+	}
+
 	// Méthode pour récupérer l'entrée joueur
 	@SuppressWarnings("resource")
-	public static String [] placementJoueur(int player, Jeu game) {
-		System.out.println("Joueur " + player + ", c'est à vous de jouer" );
+	public static String [] placementJoueur(Joueur j, Jeu game) {
+		
+		//System.out.println("Joueur " + this.get + ", c'est à vous de jouer" );
 		
 		// On récupère la sortie du joueur
 		Scanner scEntry = new Scanner(System.in);
@@ -35,9 +41,17 @@ public class Humain extends Joueur{
 	}
 	
 	// Méthode pour que le joueur humain puisse placer sa carte
-	public static boolean placerCarte(String [] placement, Joueur J, List<Borne> bornes, Jeu game) {
+	@Override
+	public boolean prochainTour(List<Borne> bornes, Jeu game) {
+		
+		// On affiche le jeu du joueur courant, s'il est humain uniquement donc
+		Affichage.AfficherJeu(this);
+		
+		// On récupère l'entrée joueur
+		String [] placement = Humain.placementJoueur(this, game);	
+		
 		int indexCarte;
-		int indexBorne ;
+		int indexBorne;
 		// On vérifie si on n'essaie pas de passer une Sting vide à parseInt
 		try {
 			indexCarte = Integer.parseInt(placement[0]);
@@ -45,23 +59,23 @@ public class Humain extends Joueur{
 		} catch (NumberFormatException e) {
 			return false;
 		}
-		if ((indexCarte < 1|| indexCarte > J.getPaquetJoueur().size()) || (indexBorne < 1 || indexBorne > 9)) {
+		if ((indexCarte < 1|| indexCarte > this.getPaquetJoueur().size()) || (indexBorne < 1 || indexBorne > 9)) {
 			return false;
+			
 		}
-		Carte carteAPlacer = J.getPaquetJoueur().get(indexCarte-1);
+		Carte carteAPlacer = this.getPaquetJoueur().get(indexCarte-1);
 		List<Carte> coteBorne;
-	    if (J == game.getJ1()) {
+	    if (this == game.getJ1()) {
 	        coteBorne = bornes.get(indexBorne - 1).getCartesJ1();
 	    } else {
 	        coteBorne = bornes.get(indexBorne - 1).getCartesJ2();
 	    }
-
 	    if (coteBorne.size() < 3) {
 	        coteBorne.add(carteAPlacer);
-	        J.getPaquetJoueur().remove(indexCarte - 1);
+	        this.getPaquetJoueur().remove(indexCarte - 1);
 	        
 	        if (game.getPioche().size() > 0) {
-	            Carte.pioche(J, game.getPioche());
+	            Carte.pioche(this, game.getPioche());
 	        }
 	        return true;
 	    } else {
