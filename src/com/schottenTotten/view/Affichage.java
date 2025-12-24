@@ -5,6 +5,7 @@ import java.util.List;
 import com.schottenTotten.controller.Jeu;
 import com.schottenTotten.model.Borne;
 import com.schottenTotten.model.Carte;
+import com.schottenTotten.model.CarteTactique;
 
 //import java.util.List;
 
@@ -19,12 +20,20 @@ public class Affichage {
 		System.out.print("Votre main: ");
 		for (int i = 0; i <  J.getPaquetJoueur().size() ; i++) {
 			Carte carte = J.getPaquetJoueur().get(i);
-			String strCarte = carte.getValeur() + " " + carte.getCouleur();
-			String strCarteColor = AfficherCarte(carte, strCarte);
-			System.out.printf("%10s(%d) ", strCarteColor, i+1);
+			String strCarteColor = null;
+			if (carte instanceof CarteTactique) {
+				String strCarte = String.format("%s", ((CarteTactique ) carte).getType());
+				strCarteColor = AfficherCarteTactique(carte, strCarte);
+				System.out.printf("%s(%d) ", strCarteColor, i+1);
+			} else {
+				String strCarte = carte.getValeur() + " " + carte.getCouleur();
+				strCarteColor = AfficherCarte(carte, strCarte);		
+				System.out.printf("%10s(%d) ", strCarteColor, i+1);
+			}
 		}
 		System.out.print("\n");
 		System.out.print("Joueur " + J.getPseudo() + ", c'est à vous de jouer.");
+		System.out.print("\n");
 	}
 	
 	// Méthode pour afficher le plateau de jeu
@@ -39,7 +48,7 @@ public class Affichage {
 	    	System.out.printf("Borne %d ", i);
 	    	System.out.print("    ");
 	    }
-
+	    System.out.println("");
 	    // On affiche le premier joueur
 	    afficherBornesRemportees(passif);
 	    afficherZoneCartes(bornes, numPassif, "J" + numPassif);
@@ -81,8 +90,10 @@ public class Affichage {
 	        	}
 				if (ligne < cartes.size()) {
 	                Carte c = cartes.get(ligne);
-	                String visible = String.format("%-10s", c.getValeur() + " " + c.getCouleur());
-	                System.out.print("| " + AfficherCarte(c, visible));
+	                // Le polymorphisme nous permet d'obtenir les attributs de la carte sans que cette méthode le sache
+	                String visible = String.format("%-10s", c.getDetails());
+	                String strCarteCouleur = AfficherCarte(c, visible);
+	                System.out.print("| " + strCarteCouleur);
 	            } else {
 	                System.out.print("| ----------");
 	            }
@@ -93,27 +104,52 @@ public class Affichage {
 	
 	// Méthode pour afficher une carte en couleur
 	public static String AfficherCarte(Carte c, String strFormatVisible) {
-		String color = c.getCouleur();
-		
-		String couleurANSI = ANSIColors.RESET;
-        if (color.equals("Red")) {
-            couleurANSI = ANSIColors.RED;
-        } else if (color.equalsIgnoreCase("Green")) {
-            couleurANSI = ANSIColors.GREEN;
-        } else if (color.equals("Purple")) {
-        	couleurANSI = ANSIColors.MAGENTA;
-        } else if (color.equalsIgnoreCase("Yellow")) {
-            couleurANSI = ANSIColors.YELLOW;
-        } else if (color.equals("Blue")) {
-        	couleurANSI = ANSIColors.BLUE;
-        } else if (color.equalsIgnoreCase("Brown")) {
-            couleurANSI = ANSIColors.BLACK;
-        } 
+		String couleurANSI = colorChoice(c.getCouleur());
+
         String cardColor = couleurANSI + strFormatVisible + ANSIColors.RESET;
         
         return cardColor;
 	}
+	// Méthode pour afficher la carte tactique en couleur (choix assez arbitraire)
+	public static String AfficherCarteTactique(Carte c, String strFormatVisible) {
+		String couleurANSI = ANSIColors.RESET;
+		
+		couleurANSI = ANSIColors.BLACK;
+		if (((CarteTactique ) c).getType().equals("Joker")) {
+			couleurANSI = colorChoice(c.getCouleur());
+		}
+		
+		String cardColor = couleurANSI + strFormatVisible + ANSIColors.RESET;
+		
+		return cardColor;
+	}
 
+	// Méthode pour renvoyer le texte de couleur correspoondant à la couleur choisie
+    public static String colorChoice(String color) {
+    	String couleurANSI = ANSIColors.RESET;
+    	switch (color) {
+    		case "Red":
+    			couleurANSI = ANSIColors.RED;
+    			break;
+    		case "Green":
+    			couleurANSI = ANSIColors.GREEN;
+    			break;
+    		case "Purple":
+        		couleurANSI = ANSIColors.MAGENTA;
+        		break;
+    		case "Yellow":
+        		couleurANSI = ANSIColors.YELLOW;
+        		break;
+    		case "Blue":
+        		couleurANSI = ANSIColors.BLUE;
+        		break;
+    		case "Brown":
+        		couleurANSI = ANSIColors.BLACK;
+        		break;
+    	}
+    	return couleurANSI;
+    }
+	
 	public static void AffichageDeBienvenue() {
 		System.out.println("Bienvenue dans ce jeu qui reproduit le jeu de cartes Shotten Totten.\n");
 		System.out.println("Vous pouvez vous référer au règles du jeu en accédant au lien suivant:\n");

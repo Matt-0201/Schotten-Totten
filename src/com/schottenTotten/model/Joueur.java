@@ -52,5 +52,10 @@ public abstract class Joueur {
 		}
 	}
 
+	// Méthode qui gère la logique des tours
 	public abstract boolean prochainTour(List<Borne> bornes, Jeu game);
+	
+	// Méthode pour permettre à un joueur humain de se présenter
+	public abstract void pseudoJoueur();
+
 }

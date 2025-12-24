@@ -6,6 +6,7 @@ import java.util.Scanner;
 import com.schottenTotten.controller.Jeu;
 import com.schottenTotten.model.Borne;
 import com.schottenTotten.model.Carte;
+import com.schottenTotten.model.CarteTactique;
 import com.schottenTotten.model.Joueur;
 import com.schottenTotten.view.Affichage;
 
@@ -21,9 +22,7 @@ public class Humain extends Joueur{
 
 	// Méthode pour récupérer l'entrée joueur
 	@SuppressWarnings("resource")
-	public static String [] placementJoueur(Joueur j, Jeu game) {
-		
-		//System.out.println("Joueur " + this.get + ", c'est à vous de jouer" );
+	public static String [] placementJoueur(Jeu game) {
 		
 		// On récupère la sortie du joueur
 		Scanner scEntry = new Scanner(System.in);
@@ -48,8 +47,10 @@ public class Humain extends Joueur{
 		Affichage.AfficherJeu(this);
 		
 		// On récupère l'entrée joueur
-		String [] placement = Humain.placementJoueur(this, game);	
-		
+		String [] placement = Humain.placementJoueur(game);	
+		if (placement.length != 2) {
+			return false;
+		}
 		int indexCarte;
 		int indexBorne;
 		// On vérifie si on n'essaie pas de passer une Sting vide à parseInt
@@ -64,24 +65,28 @@ public class Humain extends Joueur{
 			
 		}
 		Carte carteAPlacer = this.getPaquetJoueur().get(indexCarte-1);
-		List<Carte> coteBorne;
-	    if (this == game.getJ1()) {
-	        coteBorne = bornes.get(indexBorne - 1).getCartesJ1();
-	    } else {
-	        coteBorne = bornes.get(indexBorne - 1).getCartesJ2();
+		
+		// On place la carte  suivant si c'est une carte normale, ou une carte tactique (toutes différentes)
+		boolean isPlayable = game.jouerCarte(carteAPlacer, this, indexBorne, indexCarte, bornes);
+		
+		return isPlayable;
+
 	    }
-	    if (coteBorne.size() < 3) {
-	        coteBorne.add(carteAPlacer);
-	        this.getPaquetJoueur().remove(indexCarte - 1);
-	        
-	        if (game.getPioche().size() > 0) {
-	            Carte.pioche(this, game.getPioche());
-	        }
-	        return true;
-	    } else {
-	        System.out.println("Cette borne est déjà pleine de votre côté !");
-	        return false;
-	    }
-	}
 	
+	// Méthode pour prendre le pseudo du joueur et le sauvegarder
+	@Override
+	public void pseudoJoueur() {
+		System.out.println("Joueur " + this.pseudo + ", veuillez choisir un pseudo");
+		Scanner sc = new Scanner(System.in);
+		boolean madeChoice = false;
+		while (!madeChoice) {
+			String pseudo = sc.nextLine();
+			if (pseudo.length() != 0) {
+				this.pseudo = pseudo;
+				madeChoice = true;				
+			} else {
+				System.out.println("Psuedo non valide.");
+			}
+		}
+	}
 }

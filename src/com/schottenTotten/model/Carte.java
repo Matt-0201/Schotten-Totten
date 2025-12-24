@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.schottenTotten.controller.Jeu;
+import com.schottenTotten.controller.JeuTactique;
+
 public class Carte {
 	private int valeur;
 	private String couleur;
@@ -11,6 +14,11 @@ public class Carte {
 	public Carte(int valeur, String couleur) {
 		this.setValeur(valeur);
 		this.setCouleur(couleur);
+	}
+	
+	public Carte() {
+		valeur = 0;
+		couleur = "undefined";
 	}
 
 	public int getValeur() {
@@ -27,6 +35,10 @@ public class Carte {
 
 	public void setCouleur(String couleur) {
 		this.couleur = couleur;
+	}
+	
+	public String getDetails() {
+		return valeur + " " + couleur;
 	}
 	
 	public static void displayCard(Carte card) {
@@ -52,16 +64,21 @@ public class Carte {
 	}
 	
 	// Méthode qui distribue 6 cartes à un joueur, pour le début de partie
-	public static void distribInit(Joueur j, List<Carte> Pioche) {
-		for (int i = 0; i < 6; i++) {
+	public static void distribInit(Joueur j, List<Carte> Pioche, Jeu game) {
+		int nbCartes;
+		if (game instanceof JeuTactique) {
+			nbCartes = 7;
+		} else {
+			nbCartes = 6;
+		}
+		for (int i = 0; i < nbCartes; i++) {
 			j.getPaquetJoueur().add(Pioche.get(Pioche.size()-1));
 			Pioche.removeLast();
 		}
 	}
 
 	// Méthode qui distribue une carte au joueur (appelée après chaque tour)
-	public static void pioche(Joueur J, List<Carte> Pioche) {
-		List<Carte> mainJoueur = J.getPaquetJoueur();
+	public static void pioche(List<Carte> mainJoueur, List<Carte> Pioche) {
 		mainJoueur.add(Pioche.get(Pioche.size()-1));
 		Pioche.removeLast();
 	}

@@ -31,7 +31,7 @@ public class Robot extends Joueur{
 					borne.add(carteAPlacer);
 					this.getPaquetJoueur().remove(randomCard-1);
 					if (game.getPioche().size() > 0) {
-						Carte.pioche(this, game.getPioche());
+						Carte.pioche(this.getPaquetJoueur(), game.getPioche());
 					} else {
 						System.out.println("Il n'y a plus de cartes à piocher !");
 					}
@@ -40,5 +40,11 @@ public class Robot extends Joueur{
 					return false;
 				} return true; // Le tour s'est bien passé
 			}
+	
+	// Dans notre version, le bot est par défaut "Robot" mais on peut imaginer changer cette  méthode pour le nommer
+	@Override
+	public void pseudoJoueur() {
+		return;
+	}
 }
 
