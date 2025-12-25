@@ -13,35 +13,35 @@ public class Robot extends Joueur{
 		super();
 	}
 	
-
+	// On gère le prochain tour du robot, cette version basique joue aléatoirement et pioche après chaque tour
 	@Override
 	public boolean prochainTour(List<Borne> bornes, Jeu game) {
 		// On définit l'amplitude sur laquelle on tire une carte au hasard
-				int rangeCard = (this.getPaquetJoueur().size() - 1 ) + 1;
-				// On définit l'amplitude sur laquelle on choisit une borne
-				int rangeBorne = (9 - 1 ) + 1;
+		int rangeCard = (this.getPaquetJoueur().size() - 1 ) + 1;
+		// On définit l'amplitude sur laquelle on choisit une borne
+		int rangeBorne = (9 - 1 ) + 1;
 				
-				int randomCard = (int) ((rangeCard * Math.random()) + 1);
-				int randomBorne = (int) ((rangeBorne * Math.random()) + 1);
-				System.out.println("Carte: " + randomCard + " Borne: " + randomBorne);
+		int randomCard = (int) ((rangeCard * Math.random()) + 1);
+		int randomBorne = (int) ((rangeBorne * Math.random()) + 1);
 
-				Carte carteAPlacer = this.getPaquetJoueur().get(randomCard-1);
-				List<Carte> borne = bornes.get(randomBorne-1).getCartesJ2();
-				if (borne.size() < 3) {
-					borne.add(carteAPlacer);
-					this.getPaquetJoueur().remove(randomCard-1);
-					if (game.getPioche().size() > 0) {
-						Carte.pioche(this.getPaquetJoueur(), game.getPioche());
-					} else {
-						System.out.println("Il n'y a plus de cartes à piocher !");
-					}
-				} else {
-					System.out.println("Il y a eu un problème");
-					return false;
-				} return true; // Le tour s'est bien passé
+		Carte carteAPlacer = this.getPaquetJoueur().get(randomCard-1);
+		List<Carte> borne = bornes.get(randomBorne-1).getCartesJ2();
+		if (borne.size() < 3) {
+		borne.add(carteAPlacer);
+		this.getPaquetJoueur().remove(randomCard-1);
+		if (game.getPioche().size() > 0) {
+			Carte.pioche(this.getPaquetJoueur(), game.getPioche());
+			} else {
+				System.out.println("Il n'y a plus de cartes à piocher !");
 			}
+			} else {
+				System.out.println("Il y a eu un problème");
+				return false;
+			} return true; // Le tour s'est bien passé
+		}
 	
-	// Dans notre version, le bot est par défaut "Robot" mais on peut imaginer changer cette  méthode pour le nommer
+	// Dans notre version, le bot est par défaut "Robot" mais on peut imaginer changer cette méthode pour demander au joueur de le nommer,
+	// ou de le nommer suivant sa difficulté comme "Robot moyen", "Robot difficile"
 	@Override
 	public void pseudoJoueur() {
 		return;

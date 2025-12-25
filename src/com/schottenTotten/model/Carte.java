@@ -41,6 +41,7 @@ public class Carte {
 		return valeur + " " + couleur;
 	}
 	
+	// Méthode basique pour afficher une carte (sert de vérification au début)
 	public static void displayCard(Carte card) {
 		System.out.println("Voici une carte: " + card.getCouleur() + " " + card.getValeur());
 	}

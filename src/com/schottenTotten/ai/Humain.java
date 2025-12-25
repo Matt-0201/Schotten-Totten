@@ -6,7 +6,6 @@ import java.util.Scanner;
 import com.schottenTotten.controller.Jeu;
 import com.schottenTotten.model.Borne;
 import com.schottenTotten.model.Carte;
-import com.schottenTotten.model.CarteTactique;
 import com.schottenTotten.model.Joueur;
 import com.schottenTotten.view.Affichage;
 
@@ -24,7 +23,7 @@ public class Humain extends Joueur{
 	@SuppressWarnings("resource")
 	public static String [] placementJoueur(Jeu game) {
 		
-		// On récupère la sortie du joueur
+		// On récupère l'entrée du joueur
 		Scanner scEntry = new Scanner(System.in);
 		String strEntry = scEntry.nextLine();
 		// On vérifie si le joueur a demandé a quitter la partie
@@ -62,15 +61,13 @@ public class Humain extends Joueur{
 		}
 		if ((indexCarte < 1|| indexCarte > this.getPaquetJoueur().size()) || (indexBorne < 1 || indexBorne > 9)) {
 			return false;
-			
 		}
 		Carte carteAPlacer = this.getPaquetJoueur().get(indexCarte-1);
 		
-		// On place la carte  suivant si c'est une carte normale, ou une carte tactique (toutes différentes)
+		// On place la carte  suivant si c'est une carte normale, ou une carte tactique (qui sont toutes différentes)
 		boolean isPlayable = game.jouerCarte(carteAPlacer, this, indexBorne, indexCarte, bornes);
 		
 		return isPlayable;
-
 	    }
 	
 	// Méthode pour prendre le pseudo du joueur et le sauvegarder

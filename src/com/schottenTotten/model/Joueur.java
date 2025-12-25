@@ -56,6 +56,6 @@ public abstract class Joueur {
 	public abstract boolean prochainTour(List<Borne> bornes, Jeu game);
 	
 	// Méthode pour permettre à un joueur humain de se présenter
-	public abstract void pseudoJoueur();
+	public abstract void pseudoJoueur(		);
 
 }

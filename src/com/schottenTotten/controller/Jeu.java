@@ -49,7 +49,6 @@ public abstract class Jeu {
 	// Méthode commune à chaque variante, lance le jeu
 	public void lancerPartie() {
 		System.out.println("Initialisation du jeu....\n");
-		
 		// On initialise le jeu selon la variante
 		this.initialiserPaquet();
 		
@@ -73,7 +72,6 @@ public abstract class Jeu {
 			this.GiveBornes(this.bornes, this.J1, this.J2);
 			
 			// Affichage
-			System.out.println("Etat du jeu:");
 			Affichage.AfficherPlateau(this.bornes, JoueurActif, JoueurPassif, this);
 			
 			// Tour du joueur
@@ -122,7 +120,6 @@ public abstract class Jeu {
 		Joueur J2 = null;
 		boolean choice = true;
 		while(choice) {
-			System.out.println("Tapez 1 pour Joueur vs Bot, 2 pour Joueur vs Joueur :");
 			String strEntry = scEntry.nextLine();
 			
 			if (strEntry.equals("2")) {
@@ -159,9 +156,6 @@ public abstract class Jeu {
 
 	public int scoreBorne(List<Carte> cartes, int indexBorne) {
 		List<Integer> listeValeur = new ArrayList<Integer>();
-		System.out.println(cartes.get(0).getCouleur());
-		System.out.println(cartes.get(1).getCouleur());
-		System.out.println(cartes.get(2).getCouleur()); 
 		for (int i = 0; i < cartes.size(); i++) {
 			if (cartes.get(i) instanceof CarteTactique) {
 				CarteTactique ct = (CarteTactique) cartes.get(i);
